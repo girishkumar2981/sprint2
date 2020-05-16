@@ -1,3 +1,4 @@
+
 package com.cg.anurag.b2.imsdrs.service;
 
 import java.util.List;
@@ -10,13 +11,19 @@ import com.cg.anurag.b2.imsdrs.dto.RawMaterialSpecs;
 @Service
 public class RawMaterialSpecsService {
 	@Autowired
-	RawMaterialSpecsDAO rmsd;
-	public void setRmsd(RawMaterialSpecsDAO rmsd) {
-		this.rmsd = rmsd;
+	RawMaterialSpecsDAO rawMaterialSpecsDao;
+	
+	public RawMaterialSpecsDAO getRawMaterialSpecsDao() {
+		return rawMaterialSpecsDao;
 	}
+
+	public void setRawMaterialSpecsDao(RawMaterialSpecsDAO rawMaterialSpecsDao) {
+		this.rawMaterialSpecsDao = rawMaterialSpecsDao;
+	}
+
 	@Transactional
 	public List<RawMaterialSpecs> getAllRawMaterialSpecs() {
-		return rmsd.findAll();
+		return rawMaterialSpecsDao.findAll();
 		
 	}
 

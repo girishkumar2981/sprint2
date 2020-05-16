@@ -2,10 +2,10 @@ package com.cg.anurag.b2.imsdrmo.controller;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,17 +20,15 @@ import org.springframework.web.client.RestTemplate;
 import com.cg.anurag.b2.imsdrmo.dto.Orders;
 import com.cg.anurag.b2.imsdrmo.dto.RawMaterialOrder;
 import com.cg.anurag.b2.imsdrmo.dto.RawMaterialSpecs;
-import com.cg.anurag.b2.imsdrmo.exception.IdNotFoundException;
-import com.cg.anurag.b2.imsdrmo.exception.UnsuccessfullOrder;
 import com.cg.anurag.b2.imsdrmo.service.RawMaterialOrderService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class RawMaterialOrderController {
 @Autowired
-RawMaterialOrderService rmos;
-public void setRmos(RawMaterialOrderService rmos) {
-	this.rmos = rmos;
+RawMaterialOrderService rawMaterialOrderService;
+public void setRawMaterialOrderService(RawMaterialOrderService rawMaterialOrderService) {
+	this.rawMaterialOrderService = rawMaterialOrderService;
 }
 @Autowired
 RestTemplate rest;
@@ -38,57 +36,78 @@ RestTemplate rest;
 public ResponseEntity<Orders> getRawMaterialOrder(@PathVariable String supplierId,@PathVariable String deliverystatus,@PathVariable String startDate,@PathVariable String endDate)throws ParseException
 {
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	LocalDate sd = LocalDate.parse(startDate, formatter);
+	LocalDate startedDate = LocalDate.parse(startDate, formatter);
 	DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	LocalDate ed=LocalDate.parse(endDate,formatter1);
-	Orders oo=rmos.getRawMaterialOrder(supplierId,deliverystatus,sd,ed);
-	if(oo!=null)
-	{
-		return new ResponseEntity<Orders>(oo,HttpStatus.OK);
+	LocalDate endedDate=LocalDate.parse(endDate,formatter1);
+	try {
+		    List<RawMaterialOrder> list = rawMaterialOrderService.getRawMaterialOrder(supplierId);
+			List<RawMaterialOrder> slist=new ArrayList<>();
+			for(RawMaterialOrder rawMaterialOrder : list)
+			{
+			if(rawMaterialOrder.getDateoforder().isAfter(startedDate)&& rawMaterialOrder.getDateoforder().isBefore(endedDate)&&rawMaterialOrder.getDeliverystatus().equalsIgnoreCase(deliverystatus))
+			{
+				slist.add(rawMaterialOrder);
+				
+			}
+			
+			}
+			Orders orders=new Orders();
+			orders.setOrders(slist);
+			return  new ResponseEntity<Orders>(orders,new HttpHeaders(),HttpStatus.OK);
 	}
-	else
-		return new ResponseEntity("Not successful",HttpStatus.NOT_FOUND);
-}
-@PostMapping("/placeorder/{quantityvalue}")
-public ResponseEntity<RawMaterialOrder> placeorder(@RequestBody RawMaterialSpecs rawmaterialspes,@PathVariable double quantityvalue)
-{
-	RawMaterialOrder prmo=new RawMaterialOrder();
-	RawMaterialOrder t =rmos.placeorder(prmo,rawmaterialspes,quantityvalue);
-	if(t==null) {
-		throw new IdNotFoundException("Cannot place order");
-	} else {
-		return new ResponseEntity<RawMaterialOrder>(t, new HttpHeaders(), HttpStatus.OK);
-	}
+	
+		catch(Exception e)
+		{
+			return new ResponseEntity("supplierId doesnot exists",new HttpHeaders(),HttpStatus.NOT_FOUND);
+		}
 	}
 
+@PostMapping("/placeorder/{quantityvalue}")
+public ResponseEntity<String> placeAnOrder(@RequestBody RawMaterialSpecs rawMaterialSpecs,@PathVariable double quantityvalue)
+{
+	try
+	{
+	RawMaterialOrder rawMaterialOrder=new RawMaterialOrder();
+	RawMaterialOrder rawMaterialOrderr =rawMaterialOrderService.placeOrder(rawMaterialOrder,rawMaterialSpecs,quantityvalue);
+	if(rawMaterialOrderr!=null) {
+		return new ResponseEntity<>("order placed successfully", new HttpHeaders(), HttpStatus.OK);
+	} else {
+		return new ResponseEntity<>("cannot place order", new HttpHeaders(), HttpStatus.NOT_FOUND);
+	}
+	}
+	catch(Exception e)
+	{
+		return new ResponseEntity<>("cannot place order", new HttpHeaders(), HttpStatus.NOT_FOUND);
+	}
+}
 @GetMapping("/trackorder/{orderId}")
-public ResponseEntity<RawMaterialOrder> getorder(@PathVariable int orderId) {
+public ResponseEntity<RawMaterialOrder> getOrder(@PathVariable int orderId) {
 	try {
-	RawMaterialOrder d = rmos.trackrawmaterialorder(orderId);
-	if (d!= null) {
-		return new ResponseEntity<RawMaterialOrder>(d, new HttpHeaders(), HttpStatus.OK);
+	RawMaterialOrder rawMaterialOrder = rawMaterialOrderService.trackRawmaterialOrder(orderId);
+	if (rawMaterialOrder!= null) {
+		return new ResponseEntity<RawMaterialOrder>(rawMaterialOrder, new HttpHeaders(), HttpStatus.OK);
 	} else {
 		throw new NoSuchElementException();
 	}
 	}
 	catch(NoSuchElementException e)
 	{
-		return new ResponseEntity("orderId doesnot exists",new HttpHeaders(),HttpStatus.NOT_FOUND);
+		return new ResponseEntity("orderId doesnot exists", new HttpHeaders(),HttpStatus.NOT_FOUND);
 	}
 }
 @PutMapping("/Updatedeliverystatus/{orderId}/{deliverystatus}")
-public ResponseEntity<String> updateorder(@PathVariable int orderId,@PathVariable String deliverystatus)
+public ResponseEntity<String> updateOrder(@PathVariable int orderId,@PathVariable String deliverystatus)
 	{
 		try
 		{
-		boolean e = rmos.updaterawmaterialorder(orderId,deliverystatus);
-		if (e==false) {
-			return new ResponseEntity<String>("Update details Unsuccessful,Provided Id does not exist",HttpStatus.NOT_FOUND);
-		} else {
+		boolean value = rawMaterialOrderService.updateRawmaterialOrder(orderId,deliverystatus);
+		if (value==true) {
 			return new ResponseEntity<String>("delivery status updated successfully", new HttpHeaders(), HttpStatus.OK);
+		} else {
+			throw new NoSuchElementException();
 		}
 		}
-		catch(Exception e)
+		catch(NoSuchElementException e)
 		{
 			return new ResponseEntity<String>("Update details Unsuccessful,Provided Id does not exist",HttpStatus.NOT_FOUND);
 		}

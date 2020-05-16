@@ -1,72 +1,59 @@
 package com.cg.anurag.b2.imsdrmo.service;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cg.anurag.b2.imsdrmo.dao.RawMaterialOrderDAO;
-import com.cg.anurag.b2.imsdrmo.dto.Orders;
 import com.cg.anurag.b2.imsdrmo.dto.RawMaterialOrder;
 import com.cg.anurag.b2.imsdrmo.dto.RawMaterialSpecs;
 
 @Service
 public class RawMaterialOrderService {
 @Autowired
-RawMaterialOrderDAO rmo;
-public void setRmo(RawMaterialOrderDAO rmo) {
-	this.rmo = rmo;
+RawMaterialOrderDAO rawMaterialOrderDao;
+
+public void setRawMaterialOrderDao(RawMaterialOrderDAO rawMaterialOrderDao) {
+	this.rawMaterialOrderDao = rawMaterialOrderDao;
 }
 @Transactional
-public RawMaterialOrder placeorder(RawMaterialOrder prmo,RawMaterialSpecs rawmaterialspes,double quantityvalue ) {
+public RawMaterialOrder placeOrder(RawMaterialOrder rawMaterialOrder,RawMaterialSpecs rawMaterialSpecs,double quantityvalue ) {
 	
-	double unitprice=rawmaterialspes.getPriceperunit();
-	prmo.setTotalprice(unitprice*quantityvalue);
-	prmo.setRawmaterialname(rawmaterialspes.getRawmaterialname());
-	prmo.setPriceperunit(rawmaterialspes.getPriceperunit());
-	prmo.setQuantityvalue(quantityvalue);
-	prmo.setWarehouseId(rawmaterialspes.getWarehouseId());
-	prmo.setSupplierId(rawmaterialspes.getSupplierId());
-	prmo.setManufacturingdate(rawmaterialspes.getManufacturingdate());
-	prmo.setExpirydate(rawmaterialspes.getExpirydate());
-	prmo.setDeliverystatus("processing");
-	LocalDate doo = LocalDate.now();
-	prmo.setDateoforder(LocalDate.now());
-	LocalDate delivery = doo.plusDays(5);
-	prmo.setDateofdelivery(delivery);;
-	prmo.setRawmaterialId(rawmaterialspes.getRawmaterialId());
-return rmo.save(prmo);
+	double unitprice=rawMaterialSpecs.getPriceperunit();
+	rawMaterialOrder.setTotalprice(unitprice*quantityvalue);
+	rawMaterialOrder.setRawmaterialname(rawMaterialSpecs.getRawmaterialname());
+	rawMaterialOrder.setPriceperunit(rawMaterialSpecs.getPriceperunit());
+	rawMaterialOrder.setQuantityvalue(quantityvalue);
+	rawMaterialOrder.setWarehouseId(rawMaterialSpecs.getWarehouseId());
+	rawMaterialOrder.setSupplierId(rawMaterialSpecs.getSupplierId());
+	rawMaterialOrder.setManufacturingdate(rawMaterialSpecs.getManufacturingdate());
+	rawMaterialOrder.setExpirydate(rawMaterialSpecs.getExpirydate());
+	rawMaterialOrder.setDeliverystatus("processing");
+	LocalDate localDate = LocalDate.now();
+	rawMaterialOrder.setDateoforder(LocalDate.now());
+	LocalDate deliveryDate = localDate.plusDays(5);
+	rawMaterialOrder.setDateofdelivery(deliveryDate);;
+	rawMaterialOrder.setRawmaterialId(rawMaterialSpecs.getRawmaterialId());
+return rawMaterialOrderDao.save(rawMaterialOrder);
 }
 @Transactional
-public  RawMaterialOrder trackrawmaterialorder (int orderId)
+public  RawMaterialOrder trackRawmaterialOrder (int orderId)
 {
-	return rmo.findById(orderId).get();
+	return rawMaterialOrderDao.findById(orderId).get();
 }
 @Transactional
-public Orders getRawMaterialOrder(String supplierId,String deliverystatus,LocalDate sd,LocalDate ed)
+public List<RawMaterialOrder> getRawMaterialOrder(String supplierId)
 {
-	List<RawMaterialOrder> list = rmo.findAllOrdersBySupplierId(supplierId);
-	List<RawMaterialOrder> slist=new ArrayList<>();
-	for(RawMaterialOrder r : list)
-	{
-	if(r.getDateoforder().isAfter(sd)&& r.getDateoforder().isBefore(ed)&&r.getDeliverystatus().equalsIgnoreCase(deliverystatus))
-	{
-		slist.add(r);
-		
-	}
-	}
-	Orders o=new Orders();
-	o.setOrders(slist);
-	return o;
+	return rawMaterialOrderDao.findAllOrdersBySupplierId(supplierId);
+}
 	
-}
 @Transactional
-public boolean updaterawmaterialorder(int orderId,String deliverystatus)
+public boolean updateRawmaterialOrder(int orderId,String deliverystatus)
 {
-	RawMaterialOrder v=rmo.findById(orderId).get();
-	if(v!=null)
+	RawMaterialOrder rawMaterialOrder=rawMaterialOrderDao.findById(orderId).get();
+	if(rawMaterialOrder!=null)
 	{
-		v.setDeliverystatus(deliverystatus);
+		rawMaterialOrder.setDeliverystatus(deliverystatus);
 		return true;
 	}
 	return false;

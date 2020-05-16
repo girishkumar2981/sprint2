@@ -14,18 +14,39 @@ import org.springframework.web.client.RestTemplate;
 import com.cg.anurag.b2.imsdrs.dto.RawMaterialSpecs;
 import com.cg.anurag.b2.imsdrs.service.RawMaterialSpecsService;
 
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class RawMaterialSpecsController {
 @Autowired
-RawMaterialSpecsService rmss;
+RawMaterialSpecsService rawMaterialSpecsService;
+
+public void setRawMaterialSpecsService(RawMaterialSpecsService rawMaterialSpecsService) {
+	this.rawMaterialSpecsService = rawMaterialSpecsService;
+}
 @Autowired
 RestTemplate rest;
 @GetMapping("/GetAllRawMaterialSpecs")
 private ResponseEntity<List<RawMaterialSpecs>> getAllSpecs() 
+
     {
-	List<RawMaterialSpecs> specslist = rmss.getAllRawMaterialSpecs();
-	return new ResponseEntity<List<RawMaterialSpecs>>(specslist, new HttpHeaders(), HttpStatus.OK);
+	try
+	{
+	List<RawMaterialSpecs> specslist = rawMaterialSpecsService.getAllRawMaterialSpecs();
+	if(specslist.isEmpty())
+	{
+		return new ResponseEntity("no rawmaterials available", new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
+	else
+	{
+		return new ResponseEntity<List<RawMaterialSpecs>>(specslist, new HttpHeaders(), HttpStatus.OK);
+	}
+	}
+	catch(Exception e)
+	{
+		return new ResponseEntity("no rawmaterials available", new HttpHeaders(), HttpStatus.NOT_FOUND);
+	}
 	
+	
+}
 }
