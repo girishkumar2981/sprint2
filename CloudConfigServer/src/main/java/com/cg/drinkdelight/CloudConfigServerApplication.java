@@ -1,4 +1,4 @@
-package com.pecunia.ccs;
+package com.cg.drinkdelight;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
