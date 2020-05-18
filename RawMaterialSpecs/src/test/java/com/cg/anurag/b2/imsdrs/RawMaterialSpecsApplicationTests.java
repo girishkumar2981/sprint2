@@ -1,13 +1,48 @@
 package com.cg.anurag.b2.imsdrs;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import java.util.List;
 
-@SpringBootTest
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.ResponseEntity;
+import com.cg.anurag.b2.imsdrs.dto.RawMaterialSpecs;
+import com.cg.anurag.b2.imsdrs.service.RawMaterialSpecsService;
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class RawMaterialSpecsApplicationTests {
 
-	@Test
-	void contextLoads() {
+	@Autowired
+	TestRestTemplate testRestTemplate;
+	public void setTestRestTemplate(TestRestTemplate testRestTemplate)
+	{
+		this.testRestTemplate = testRestTemplate;
 	}
-
+	@LocalServerPort
+	int serverPort;
+	@Autowired
+	RawMaterialSpecsService rawMaterialSpecsService;
+	/*@Test
+	public void getAllSpecs_Positive() throws Exception
+	{
+		String url="http://localhost:"+serverPort+"/GetAllRawMaterialSpecs";
+		ResponseEntity<List<RawMaterialSpecs>> rawMaterialSpecs = testRestTemplate.getForEntity(url, RawMaterialSpecs.class);
+		Assertions.assertEquals(200, rawMaterialSpecs.getStatusCodeValue());
+	}*/
+	
+	@Test
+public void getRawMaterialSpecs_Positive() throws Exception
+{
+	List<RawMaterialSpecs> rawMaterialSpecs = rawMaterialSpecsService.getAllRawMaterialSpecs();
+	Assertions.assertEquals(2, rawMaterialSpecs.size());
+}
+	@Test
+	public void getRawMaterialSpecs_Negative() throws Exception
+	{
+		List<RawMaterialSpecs> rawMaterialSpecs = rawMaterialSpecsService.getAllRawMaterialSpecs();
+		Assertions.assertNotSame(3, rawMaterialSpecs.size());
+	}
 }

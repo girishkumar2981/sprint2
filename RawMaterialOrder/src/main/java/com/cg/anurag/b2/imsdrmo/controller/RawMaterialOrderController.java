@@ -1,3 +1,4 @@
+
 package com.cg.anurag.b2.imsdrmo.controller;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -40,7 +41,14 @@ public ResponseEntity<Orders> getRawMaterialOrder(@PathVariable String supplierI
 	DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	LocalDate endedDate=LocalDate.parse(endDate,formatter1);
 	try {
+		
 		    List<RawMaterialOrder> list = rawMaterialOrderService.getRawMaterialOrder(supplierId);
+		    if(list.isEmpty())
+		    {
+		    	return new ResponseEntity("supplierId doesnot exists",HttpStatus.NOT_FOUND);
+		    }
+		    else
+		    {
 			List<RawMaterialOrder> slist=new ArrayList<>();
 			for(RawMaterialOrder rawMaterialOrder : list)
 			{
@@ -54,6 +62,7 @@ public ResponseEntity<Orders> getRawMaterialOrder(@PathVariable String supplierI
 			Orders orders=new Orders();
 			orders.setOrders(slist);
 			return  new ResponseEntity<Orders>(orders,new HttpHeaders(),HttpStatus.OK);
+	}
 	}
 	
 		catch(Exception e)

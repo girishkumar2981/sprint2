@@ -50,14 +50,18 @@ public List<RawMaterialOrder> getRawMaterialOrder(String supplierId)
 @Transactional
 public boolean updateRawmaterialOrder(int orderId,String deliverystatus)
 {
+	try {
 	RawMaterialOrder rawMaterialOrder=rawMaterialOrderDao.findById(orderId).get();
 	if(rawMaterialOrder!=null)
 	{
 		rawMaterialOrder.setDeliverystatus(deliverystatus);
 		return true;
 	}
+	}
+	catch(Exception e)
+	{
 	return false;
 }
-
+return false;
 }
-
+}

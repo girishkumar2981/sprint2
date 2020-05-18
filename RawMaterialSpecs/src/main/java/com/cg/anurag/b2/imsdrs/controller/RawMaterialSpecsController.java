@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.cg.anurag.b2.imsdrs.dto.RawMaterialSpecs;
+import com.cg.anurag.b2.imsdrs.exception.NoDataFoundException;
 import com.cg.anurag.b2.imsdrs.service.RawMaterialSpecsService;
 
 
@@ -30,23 +31,15 @@ RestTemplate rest;
 private ResponseEntity<List<RawMaterialSpecs>> getAllSpecs() 
 
     {
-	try
+	List<RawMaterialSpecs> rawMaterialSpecs=rawMaterialSpecsService.getAllRawMaterialSpecs();
+	if(rawMaterialSpecs.isEmpty())
 	{
-	List<RawMaterialSpecs> specslist = rawMaterialSpecsService.getAllRawMaterialSpecs();
-	if(specslist.isEmpty())
-	{
-		return new ResponseEntity("no rawmaterials available", new HttpHeaders(), HttpStatus.NOT_FOUND);
-    }
+		throw new NoDataFoundException("No rawmaterials found");
+	}
 	else
 	{
-		return new ResponseEntity<List<RawMaterialSpecs>>(specslist, new HttpHeaders(), HttpStatus.OK);
+		return new ResponseEntity<List<RawMaterialSpecs>>(rawMaterialSpecs, new HttpHeaders(), HttpStatus.OK);
 	}
-	}
-	catch(Exception e)
-	{
-		return new ResponseEntity("no rawmaterials available", new HttpHeaders(), HttpStatus.NOT_FOUND);
-	}
-	
 	
 }
 }

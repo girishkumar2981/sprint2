@@ -30,9 +30,9 @@ public void setDisplaySupplierService(DisplaySupplierService displaySupplierServ
 private ResponseEntity<DisplaySupplier> getSupplierDetail(@PathVariable String supplierId) {
 	try
 	{
-	DisplaySupplier list = displaySupplierService.getSupplierDetails(supplierId);
-	if (list!=null) {
-		return new ResponseEntity<DisplaySupplier>(list, new HttpHeaders(), HttpStatus.OK);
+	DisplaySupplier displaySupplier = displaySupplierService.getSupplierDetails(supplierId);
+	if (displaySupplier!=null) {
+		return new ResponseEntity<DisplaySupplier>(displaySupplier, new HttpHeaders(), HttpStatus.OK);
 	} else {
 		throw new NoSuchElementException();
 	}
