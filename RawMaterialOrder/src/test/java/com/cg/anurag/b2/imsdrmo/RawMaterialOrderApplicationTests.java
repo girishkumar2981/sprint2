@@ -1,7 +1,4 @@
 package com.cg.anurag.b2.imsdrmo;
-
-import java.time.LocalDate;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,26 +65,4 @@ public void updateDeliveryStatus_Negative() throws Exception
     ResponseEntity<String> result = testRestTemplate.exchange(url, HttpMethod.PUT, null, String.class);
     Assertions.assertEquals(404, result.getStatusCodeValue());
 }
-/*@Test
-public void placeOrder_Positive() throws Exception
-{  
-	int unitprice = 100;
-	double quantityvalue = 10;
-	String url = "http://localhost:"+serverPort+"/placeorder/5";
-	RawMaterialOrder rawMaterialOrder = new RawMaterialOrder();
-	rawMaterialOrder.setTotalprice(unitprice*quantityvalue);
-	rawMaterialOrder.setRawmaterialname("fabric");
-	rawMaterialOrder.setPriceperunit(unitprice);
-	rawMaterialOrder.setQuantityvalue(quantityvalue);
-	rawMaterialOrder.setWarehouseId("handloom india");
-	rawMaterialOrder.setSupplierId("fabric india");
-	rawMaterialOrder.setManufacturingdate(01-FEB-19 );
-	rawMaterialOrder.setExpirydate(2030-03-01);
-	rawMaterialOrder.setDeliverystatus("processing");
-	LocalDate localDate = LocalDate.now();
-	rawMaterialOrder.setDateoforder(LocalDate.now());
-	LocalDate deliveryDate = localDate.plusDays(5);
-	rawMaterialOrder.setDateofdelivery(deliveryDate);;
-	rawMaterialOrder.setRawmaterialId("fabric 101");
-}*/
 }

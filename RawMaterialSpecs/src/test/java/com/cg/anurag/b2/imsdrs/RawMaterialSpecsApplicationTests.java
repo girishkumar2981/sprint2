@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.ResponseEntity;
 import com.cg.anurag.b2.imsdrs.dto.RawMaterialSpecs;
 import com.cg.anurag.b2.imsdrs.service.RawMaterialSpecsService;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -25,14 +24,6 @@ class RawMaterialSpecsApplicationTests {
 	int serverPort;
 	@Autowired
 	RawMaterialSpecsService rawMaterialSpecsService;
-	/*@Test
-	public void getAllSpecs_Positive() throws Exception
-	{
-		String url="http://localhost:"+serverPort+"/GetAllRawMaterialSpecs";
-		ResponseEntity<List<RawMaterialSpecs>> rawMaterialSpecs = testRestTemplate.getForEntity(url, RawMaterialSpecs.class);
-		Assertions.assertEquals(200, rawMaterialSpecs.getStatusCodeValue());
-	}*/
-	
 	@Test
 public void getRawMaterialSpecs_Positive() throws Exception
 {

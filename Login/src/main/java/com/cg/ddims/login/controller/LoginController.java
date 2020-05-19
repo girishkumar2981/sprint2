@@ -23,6 +23,9 @@ public class LoginController {
 	}
 	@Autowired
 	RestTemplate rest;
+	/*
+	 * This method is used to check whether enter credentials are valid are not using HTTP Post method
+	 */
 	@PostMapping(value="/login/userId/{userId}/password/{password}")
 	public ResponseEntity<Login> getLoginDetails(@PathVariable long userId,@PathVariable String password)
 	{

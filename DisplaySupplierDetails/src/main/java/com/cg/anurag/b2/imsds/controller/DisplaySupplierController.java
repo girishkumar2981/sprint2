@@ -25,7 +25,9 @@ RestTemplate rest;
 public void setDisplaySupplierService(DisplaySupplierService displaySupplierService) {
 	this.displaySupplierService = displaySupplierService;
 }
-
+/*
+ * This method is used to fetch supplier details by specific supplierId using HTTP Get method
+ */
 @GetMapping("/GetSupplierDetail/{supplierId}")
 private ResponseEntity<DisplaySupplier> getSupplierDetail(@PathVariable String supplierId) {
 	try

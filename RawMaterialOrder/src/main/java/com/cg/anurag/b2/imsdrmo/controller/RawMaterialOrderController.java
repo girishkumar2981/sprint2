@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import com.cg.anurag.b2.imsdrmo.dto.Orders;
 import com.cg.anurag.b2.imsdrmo.dto.RawMaterialOrder;
 import com.cg.anurag.b2.imsdrmo.dto.RawMaterialSpecs;
+import com.cg.anurag.b2.imsdrmo.exception.NoOrderPlacedException;
 import com.cg.anurag.b2.imsdrmo.service.RawMaterialOrderService;
 
 @RestController
@@ -33,6 +34,9 @@ public void setRawMaterialOrderService(RawMaterialOrderService rawMaterialOrderS
 }
 @Autowired
 RestTemplate rest;
+/*
+ * This method displays all the orders of particular supplierId and delivery status between start date and end date using HTTP get method
+ */
 @GetMapping(value="/getrawmaterialorder/supplierid/{supplierId}/deliverystatus/{deliverystatus}/startDate/{startDate}/endDate/{endDate}",produces= {"application/json","application/xml"})
 public ResponseEntity<Orders> getRawMaterialOrder(@PathVariable String supplierId,@PathVariable String deliverystatus,@PathVariable String startDate,@PathVariable String endDate)throws ParseException
 {
@@ -45,7 +49,7 @@ public ResponseEntity<Orders> getRawMaterialOrder(@PathVariable String supplierI
 		    List<RawMaterialOrder> list = rawMaterialOrderService.getRawMaterialOrder(supplierId);
 		    if(list.isEmpty())
 		    {
-		    	return new ResponseEntity("supplierId doesnot exists",HttpStatus.NOT_FOUND);
+		    	return new ResponseEntity("supplierId doesnot exists",new HttpHeaders(),HttpStatus.NOT_FOUND);
 		    }
 		    else
 		    {
@@ -59,6 +63,10 @@ public ResponseEntity<Orders> getRawMaterialOrder(@PathVariable String supplierI
 			}
 			
 			}
+			if(slist.isEmpty())
+			{
+				return new ResponseEntity("No orders available",new HttpHeaders(),HttpStatus.NOT_FOUND);
+			}
 			Orders orders=new Orders();
 			orders.setOrders(slist);
 			return  new ResponseEntity<Orders>(orders,new HttpHeaders(),HttpStatus.OK);
@@ -70,25 +78,26 @@ public ResponseEntity<Orders> getRawMaterialOrder(@PathVariable String supplierI
 			return new ResponseEntity("supplierId doesnot exists",new HttpHeaders(),HttpStatus.NOT_FOUND);
 		}
 	}
-
+/*
+ * This method is used to place order using HTTP Post method
+ */
 @PostMapping("/placeorder/{quantityvalue}")
 public ResponseEntity<String> placeAnOrder(@RequestBody RawMaterialSpecs rawMaterialSpecs,@PathVariable double quantityvalue)
 {
-	try
-	{
+
 	RawMaterialOrder rawMaterialOrder=new RawMaterialOrder();
 	RawMaterialOrder rawMaterialOrderr =rawMaterialOrderService.placeOrder(rawMaterialOrder,rawMaterialSpecs,quantityvalue);
 	if(rawMaterialOrderr!=null) {
 		return new ResponseEntity<>("order placed successfully", new HttpHeaders(), HttpStatus.OK);
 	} else {
-		return new ResponseEntity<>("cannot place order", new HttpHeaders(), HttpStatus.NOT_FOUND);
+		throw new NoOrderPlacedException("order not placed");
 	}
 	}
-	catch(Exception e)
-	{
-		return new ResponseEntity<>("cannot place order", new HttpHeaders(), HttpStatus.NOT_FOUND);
-	}
-}
+	
+
+/*
+ * This method is used to fetch order based on orderId using HTTP Get method
+ */
 @GetMapping("/trackorder/{orderId}")
 public ResponseEntity<RawMaterialOrder> getOrder(@PathVariable int orderId) {
 	try {
@@ -104,6 +113,9 @@ public ResponseEntity<RawMaterialOrder> getOrder(@PathVariable int orderId) {
 		return new ResponseEntity("orderId doesnot exists", new HttpHeaders(),HttpStatus.NOT_FOUND);
 	}
 }
+/*
+ * This method is used to update delivery status of particular order  using HTTP Put method
+ */
 @PutMapping("/Updatedeliverystatus/{orderId}/{deliverystatus}")
 public ResponseEntity<String> updateOrder(@PathVariable int orderId,@PathVariable String deliverystatus)
 	{
