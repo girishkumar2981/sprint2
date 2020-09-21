@@ -25,10 +25,9 @@ RawMaterialSpecsService rawMaterialSpecsService;
 public void setRawMaterialSpecsService(RawMaterialSpecsService rawMaterialSpecsService) {
 	this.rawMaterialSpecsService = rawMaterialSpecsService;
 }
-@Autowired
-RestTemplate rest;
+
 /*
- * This method is used to fetch all the rawmaterials available with their specifications using HTTP Get method
+ * This method is used to fetch all the raw materials available with their specifications using HTTP Get request
  */
 @GetMapping("/GetAllRawMaterialSpecs")
 private ResponseEntity<List<RawMaterialSpecs>> getAllSpecs() 

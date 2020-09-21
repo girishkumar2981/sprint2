@@ -1,91 +1,107 @@
 package com.cg.otms.dto;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Set;
 
-import org.aspectj.weaver.patterns.TypePatternQuestions.Question;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity                             //Indicates that the class is an entity
+@Table(name="TestDetails")          //specifies the table name
 public class Test {
 
-	private BigInteger testId; 
-	private String testTitle;
-	private LocalTime testDuration;
-	private Set<Question> testQuestions;
-	private BigDecimal testTotalMarks;
-	private BigDecimal testMarksScored;
-	private Question currentQuestion;
-	private LocalDateTime startTime;
-	private LocalDateTime endTime;
-	public Test(BigInteger testId, String testTitle, LocalTime testDuration, Set<Question> testQuestions,
-			BigDecimal testTotalMarks, BigDecimal testMarksScored, Question currentQuestion, LocalDateTime startTime,
-			LocalDateTime endTime) {
-		super();
-		this.testId = testId;
-		this.testTitle = testTitle;
-		this.testDuration = testDuration;
-		this.testQuestions = testQuestions;
+	@Id                              //It indicates primary key of an entity class
+	private BigInteger id;
+	private String title;
+	private int testTotalMarks;
+	private int testMarksScored=0;
+	private LocalTime duration;
+	private LocalDateTime starttime;
+	private LocalDateTime endtime;
+	
+	@OneToMany(mappedBy="test",cascade=CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval=true) //It indicates one to many relation
+	private Set<Question> testQuestions;	
+
+	@OneToOne(fetch = FetchType.LAZY)   //It indicates one to one relation 
+	@JoinColumn                              
+	private User user;
+	//Getters and setters methods implementation
+	public BigInteger getId() {
+		return id;
+	}
+
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public int getTestTotalMarks() {
+		return testTotalMarks;
+	}
+
+	public void setTestTotalMarks(int testTotalMarks) {
 		this.testTotalMarks = testTotalMarks;
+	}
+
+	public int getTestMarksScored() {
+		return testMarksScored;
+	}
+
+	public void setTestMarksScored(int testMarksScored) {
 		this.testMarksScored = testMarksScored;
-		this.currentQuestion = currentQuestion;
-		this.startTime = startTime;
-		this.endTime = endTime;
 	}
-	public BigInteger getTestId() {
-		return testId;
+
+	public LocalTime getDuration() {
+		return duration;
 	}
-	public void setTestId(BigInteger testId) {
-		this.testId = testId;
+
+	public void setDuration(LocalTime duration) {
+		this.duration = duration;
 	}
-	public String getTestTitle() {
-		return testTitle;
+
+	public LocalDateTime getStarttime() {
+		return starttime;
 	}
-	public void setTestTitle(String testTitle) {
-		this.testTitle = testTitle;
+
+	public void setStarttime(LocalDateTime starttime) {
+		this.starttime = starttime;
 	}
-	public LocalTime getTestDuration() {
-		return testDuration;
+
+	public LocalDateTime getEndtime() {
+		return endtime;
 	}
-	public void setTestDuration(LocalTime testDuration) {
-		this.testDuration = testDuration;
+
+	public void setEndtime(LocalDateTime endtime) {
+		this.endtime = endtime;
 	}
+
 	public Set<Question> getTestQuestions() {
 		return testQuestions;
 	}
+
 	public void setTestQuestions(Set<Question> testQuestions) {
 		this.testQuestions = testQuestions;
 	}
-	public BigDecimal getTestTotalMarks() {
-		return testTotalMarks;
-	}
-	public void setTestTotalMarks(BigDecimal testTotalMarks) {
-		this.testTotalMarks = testTotalMarks;
-	}
-	public BigDecimal getTestMarksScored() {
-		return testMarksScored;
-	}
-	public void setTestMarksScored(BigDecimal testMarksScored) {
-		this.testMarksScored = testMarksScored;
-	}
-	public Question getCurrentQuestion() {
-		return currentQuestion;
-	}
-	public void setCurrentQuestion(Question currentQuestion) {
-		this.currentQuestion = currentQuestion;
-	}
-	public LocalDateTime getStartTime() {
-		return startTime;
-	}
-	public void setStartTime(LocalDateTime startTime) {
-		this.startTime = startTime;
-	}
-	public LocalDateTime getEndTime() {
-		return endTime;
-	}
-	public void setEndTime(LocalDateTime endTime) {
-		this.endTime = endTime;
-	}
+	
+	
 	
 }

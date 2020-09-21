@@ -19,14 +19,13 @@ import com.cg.anurag.b2.imsds.service.DisplaySupplierService;
 public class DisplaySupplierController {
 @Autowired
 DisplaySupplierService displaySupplierService;
-@Autowired
-RestTemplate rest;
+
 
 public void setDisplaySupplierService(DisplaySupplierService displaySupplierService) {
 	this.displaySupplierService = displaySupplierService;
 }
 /*
- * This method is used to fetch supplier details by specific supplierId using HTTP Get method
+ * This method is used to fetch supplier details by specific supplierId using HTTP Get request
  */
 @GetMapping("/GetSupplierDetail/{supplierId}")
 private ResponseEntity<DisplaySupplier> getSupplierDetail(@PathVariable String supplierId) {

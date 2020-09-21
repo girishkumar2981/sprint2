@@ -5,9 +5,10 @@ import java.math.BigInteger;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.cg.otms.dto.Test;
+import com.cg.otms.dto.Question;
 
 @Repository
-public interface TestDao extends JpaRepository<Test,BigInteger>{
+public interface QuestionDao extends JpaRepository<Question,BigInteger> {
+
 	
 }

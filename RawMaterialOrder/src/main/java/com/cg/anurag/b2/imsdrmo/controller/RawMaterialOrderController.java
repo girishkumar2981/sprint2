@@ -1,4 +1,5 @@
 
+
 package com.cg.anurag.b2.imsdrmo.controller;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -32,10 +33,9 @@ RawMaterialOrderService rawMaterialOrderService;
 public void setRawMaterialOrderService(RawMaterialOrderService rawMaterialOrderService) {
 	this.rawMaterialOrderService = rawMaterialOrderService;
 }
-@Autowired
-RestTemplate rest;
+
 /*
- * This method displays all the orders of particular supplierId and delivery status between start date and end date using HTTP get method
+ * This method displays all the orders of particular supplierId and delivery status between start date and end date using HTTP get request
  */
 @GetMapping(value="/getrawmaterialorder/supplierid/{supplierId}/deliverystatus/{deliverystatus}/startDate/{startDate}/endDate/{endDate}",produces= {"application/json","application/xml"})
 public ResponseEntity<Orders> getRawMaterialOrder(@PathVariable String supplierId,@PathVariable String deliverystatus,@PathVariable String startDate,@PathVariable String endDate)throws ParseException
@@ -79,7 +79,7 @@ public ResponseEntity<Orders> getRawMaterialOrder(@PathVariable String supplierI
 		}
 	}
 /*
- * This method is used to place order using HTTP Post method
+ * This method is used to place order using HTTP Post request
  */
 @PostMapping("/placeorder/{quantityvalue}")
 public ResponseEntity<String> placeAnOrder(@RequestBody RawMaterialSpecs rawMaterialSpecs,@PathVariable double quantityvalue)
@@ -96,7 +96,7 @@ public ResponseEntity<String> placeAnOrder(@RequestBody RawMaterialSpecs rawMate
 	
 
 /*
- * This method is used to fetch order based on orderId using HTTP Get method
+ * This method is used to fetch order based on orderId using HTTP Get request
  */
 @GetMapping("/trackorder/{orderId}")
 public ResponseEntity<RawMaterialOrder> getOrder(@PathVariable int orderId) {
@@ -114,7 +114,7 @@ public ResponseEntity<RawMaterialOrder> getOrder(@PathVariable int orderId) {
 	}
 }
 /*
- * This method is used to update delivery status of particular order  using HTTP Put method
+ * This method is used to update delivery status of particular order  using HTTP Put request
  */
 @PutMapping("/Updatedeliverystatus/{orderId}/{deliverystatus}")
 public ResponseEntity<String> updateOrder(@PathVariable int orderId,@PathVariable String deliverystatus)
