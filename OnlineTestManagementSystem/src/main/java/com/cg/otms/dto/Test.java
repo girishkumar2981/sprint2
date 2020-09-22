@@ -23,14 +23,14 @@ public class Test {
 	@Id                              //It indicates primary key of an entity class
 	private BigInteger id;
 	private String title;
-	private int testTotalMarks;
+	private int testTotalMarks=0;
 	private int testMarksScored=0;
 	private LocalTime duration;
 	private LocalDateTime starttime;
 	private LocalDateTime endtime;
 	//Implementing onetoMany relation and cascade=CascadeType.ALL is used to prevent flushing
-	/*@OneToMany(mappedBy="test",cascade=CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval=true) 
-	private Set<Question> testQuestions;*/	
+	@OneToMany(mappedBy="test",cascade=CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval=true) 
+	private Set<Question> testQuestions;
     //Implementing onetoOne relation
 	@OneToOne(fetch = FetchType.LAZY)  
 	@JoinColumn(name = "userId")          //Joining a column                        
@@ -94,13 +94,13 @@ public class Test {
 		this.endtime = endtime;
 	}
 
-	/*public Set<Question> getTestQuestions() {
+	public Set<Question> getTestQuestions() {
 		return testQuestions;
 	}
 
 	public void setTestQuestions(Set<Question> testQuestions) {
 		this.testQuestions = testQuestions;
-	}*/
+	}
 	
 	
 	

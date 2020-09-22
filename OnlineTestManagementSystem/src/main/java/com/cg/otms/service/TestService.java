@@ -55,11 +55,11 @@ public class TestService {
 			return testdao.findById(testId);        //Retrieves an entity by its id.
 		}
 
-	/* //Retrieving Question details with particular testId
+	 //Retrieving Question details with particular testId
 	public Set<Question> getQuestionById(BigInteger testId) {
 		Test t=testdao.getOne(testId);           //Returns a reference to the entity with the given identifier
 		return t.getTestQuestions();
-	}*/
+	}
 
 	
 	//Assigning Test to particular User

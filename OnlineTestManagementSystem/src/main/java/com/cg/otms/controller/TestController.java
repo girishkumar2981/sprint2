@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -79,20 +80,20 @@ public class TestController {
 			}
 		}
 		
-		/*//Retrieving question details with particular questionId
+		//Retrieving question details with particular questionId
 		@GetMapping("/getquestions/{testId}")            //mapping the url to get question details of a particular test 
 		public ResponseEntity<Set<Question>> getQuestionById(@PathVariable("testId") BigInteger testId) {
 			
 			Set<Question> questionDetails = testservice.getQuestionById(testId); //Invoking a method- getQuestionById
 			//Condition - Checking whether the obtained object is empty
 			if (questionDetails.isEmpty()) {
-				throw new IdNotFoundException("Id does not exist,so we couldn't fetch details");  //if object is empty throwing a IdNotFoundException
+				throw new IdNotFoundException("questions are not assigned or the given id is incorrect");  //if object is empty throwing a IdNotFoundException
 			} else {
 				//returning the questionDetails with httpStatus and headers
 				return new ResponseEntity<Set<Question>>(questionDetails, new HttpHeaders(), HttpStatus.OK);
 			}
 			
-		}*/
+		}
 		
 		//Retrieving all the test details from the database
 		@GetMapping("/testdetails")              //mapping the url to get all test details 
@@ -122,5 +123,11 @@ public class TestController {
 				//returning the ResponseEntity<String> with httpStatus and headers
 				return new ResponseEntity<String>("Delete operation is successful", new HttpHeaders(), HttpStatus.OK);
 			}
+		}
+		
+		//Exception Handling
+		@ExceptionHandler(IdNotFoundException.class)
+		public ResponseEntity<String> userNotFound(IdNotFoundException e) {
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 }

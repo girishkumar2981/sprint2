@@ -1,7 +1,6 @@
 package com.cg.otms.dto;
 
 import java.math.BigInteger;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -17,7 +16,7 @@ public class Question  {
 	private BigInteger questionId;
    
 	@ManyToOne(fetch = FetchType.LAZY)      //It indicates many to one relation 
-	@JoinColumn(nullable=false)         
+	@JoinColumn(nullable=false)        
 	private Test test;
 	
 	private String questionOptions;

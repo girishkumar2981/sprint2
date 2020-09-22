@@ -1,6 +1,8 @@
-/*package com.cg.otms.service;
+package com.cg.otms.service;
 
 import java.math.BigInteger;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -39,37 +41,5 @@ QuestionDao questiondao;
 	}
 	
 	
-	
-	
-	//Update question
-	public Question updateQuestion(BigInteger testId,Question question)
-	{if(testdao.existsById(testId))
-	{
-		Test t=testdao.getOne(testId);
-		question.setTest(t);
-		return questiondao.save(question);
-	}
-	else
-	{
-    return null;
-	}
-	}
-	
-	//Delete question
-	public boolean  deleteQuestion(BigInteger testId,Question question)
-	{
-		if(testdao.existsById(testId))
-		{
-			
-			 questiondao.delete(question);;
-			return true;
-		
-		}
-		else
-		{
-	      return false;
-		} 
-		
-	}
 
-}*/
+}
