@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -19,9 +19,10 @@ public class User {
 	@Id                               //It indicates primary key of an entity class
 	@Column(length=10)                // specifying the column length
 private String userId;
-	
+	//Implementing onetoOne relation and cascade=CascadeType.ALL is used to prevent flushing
 	@OneToOne(mappedBy="user",cascade=CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval=true) //It indicates one to one relation
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})//
+	@JoinColumn(name = "userTest")   //Joining the column
 	private Test userTest;
 	@Column(length=15)                 // specifying the column length
 private String password;

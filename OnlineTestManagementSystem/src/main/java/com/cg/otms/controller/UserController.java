@@ -14,27 +14,36 @@ import com.cg.otms.dto.User;
 import com.cg.otms.exception.UserDefinedException;
 import com.cg.otms.service.UserService;
 
-@RestController
-@RequestMapping("/users")
-@CrossOrigin("http://localhost:4200")
+@RestController                         //Indicates that the annotated class is controller
+@RequestMapping("/users")               //mapping web requests onto methods
+@CrossOrigin("http://localhost:4200")   //permitting cross-origin requests
 public class UserController {
-@Autowired
-UserService userservice;
+@Autowired                //enables to inject the object dependency implicitly
+UserService userservice;  //Enabling Dependency injection
     //user login method
-	@GetMapping("/UserLogin/{userId}/{password}")
+	@GetMapping("/UserLogin/{userId}/{password}")  //Mapping the url
 	public String userLogin(@PathVariable("userId") String userId,@PathVariable("password") String password) {
-		Optional<User> userDetails = userservice.userLogin(userId,password);
 		
-		return userDetails.toString();
+		Optional<User> userDetails = userservice.userLogin(userId,password); //Invoking a method userLogin
+		//Condition - Checking whether the obtained object is null
+		if(userDetails.isPresent())
+		{
+			return "valid";
+		}
+		else
+		{
+		return "invalid";
+		}
 	}
 	
 	//Retrieving test details of particular User
-	@GetMapping("/UserTest/{userId}")
+	@GetMapping("/UserTest/{userId}")                   //Mapping the url to get user test details
 	public Test userTest(@PathVariable("userId") String userId) {
-		Test testDetails = userservice.userTest(userId);
+		Test testDetails = userservice.userTest(userId);         //Invoking a method userTest
+		//Condition - Checking whether the obtained object is null
    if (testDetails==null) {
 			
-			throw new UserDefinedException("Test is not assigned to the User");
+			throw new UserDefinedException("Test is not assigned to the User"); //if the object is null throwing UserDefinedException
 		}
    else
    {

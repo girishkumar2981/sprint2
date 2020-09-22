@@ -4,24 +4,27 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.otms.dto.Admin;
 import com.cg.otms.service.AdminService;
 
-@RestController
-@RequestMapping("/admin")
-@CrossOrigin("http://localhost:4200")
+@RestController                       //Indicates that the annotated class is controller
+@RequestMapping("/admin")             //mapping web requests onto methods
+@CrossOrigin("http://localhost:4200") //permitting cross-origin requests
 public class AdminController {
-@Autowired
-AdminService adminservice;
-//Admin login method
-
-	@RequestMapping("/adminLogin/{adminId},{adminPassword}")
+@Autowired                      //enables to inject the object dependency implicitly
+AdminService adminservice;      //Enabling Dependency injection
+    //Admin login method
+	@GetMapping("/adminLogin/{adminId},{adminPassword}")      //Mapping the url
 	public String adminLogin(@PathVariable("adminId") String adminId,@PathVariable("adminPassword") String adminPassword) {
-		Optional<Admin> adminDetails = adminservice.adminLogin(adminId,adminPassword);
+		
+		Optional<Admin> adminDetails = adminservice.adminLogin(adminId,adminPassword); //Invoking a method - adminLogin
+		//Condition - Checking whether the obtained object is null
 		if(adminDetails.isPresent())
 		{
 			return "valid";
@@ -33,9 +36,9 @@ AdminService adminservice;
 	}
 	
 	//Inserting Admin details into database
-	@RequestMapping("/addAdmin")
+	@PostMapping("/addAdmin")                 //Mapping the url to add admin details
 	public void addAdmin()
 	{
-		adminservice.addAdmin();
+		adminservice.addAdmin();               //Invoking a method - addAdmin
 	}
 }

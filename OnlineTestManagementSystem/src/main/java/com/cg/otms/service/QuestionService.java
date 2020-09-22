@@ -1,4 +1,4 @@
-package com.cg.otms.service;
+/*package com.cg.otms.service;
 
 import java.math.BigInteger;
 
@@ -72,4 +72,4 @@ QuestionDao questiondao;
 		
 	}
 
-}
+}*/

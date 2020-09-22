@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cg.otms.dto.Test;
 
-@Repository
+@Repository                //Indicates that an annotated class is a Repository
 public interface TestDao extends JpaRepository<Test,BigInteger>{
 	
 }

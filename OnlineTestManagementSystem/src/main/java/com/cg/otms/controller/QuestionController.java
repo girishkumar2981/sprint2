@@ -1,4 +1,4 @@
-package com.cg.otms.controller;
+/*package com.cg.otms.controller;
 
 import java.math.BigInteger;
 
@@ -69,4 +69,4 @@ QuestionService questionservice;
 		
 	}
 	}
-}
+}*/

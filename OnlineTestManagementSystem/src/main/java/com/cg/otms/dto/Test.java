@@ -28,12 +28,12 @@ public class Test {
 	private LocalTime duration;
 	private LocalDateTime starttime;
 	private LocalDateTime endtime;
-	
-	@OneToMany(mappedBy="test",cascade=CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval=true) //It indicates one to many relation
-	private Set<Question> testQuestions;	
-
-	@OneToOne(fetch = FetchType.LAZY)   //It indicates one to one relation 
-	@JoinColumn                              
+	//Implementing onetoMany relation and cascade=CascadeType.ALL is used to prevent flushing
+	/*@OneToMany(mappedBy="test",cascade=CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval=true) 
+	private Set<Question> testQuestions;*/	
+    //Implementing onetoOne relation
+	@OneToOne(fetch = FetchType.LAZY)  
+	@JoinColumn(name = "userId")          //Joining a column                        
 	private User user;
 	//Getters and setters methods implementation
 	public BigInteger getId() {
@@ -94,13 +94,13 @@ public class Test {
 		this.endtime = endtime;
 	}
 
-	public Set<Question> getTestQuestions() {
+	/*public Set<Question> getTestQuestions() {
 		return testQuestions;
 	}
 
 	public void setTestQuestions(Set<Question> testQuestions) {
 		this.testQuestions = testQuestions;
-	}
+	}*/
 	
 	
 	
