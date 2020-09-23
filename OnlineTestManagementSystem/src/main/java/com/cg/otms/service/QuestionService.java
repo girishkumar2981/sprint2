@@ -40,6 +40,12 @@ QuestionDao questiondao;
 	}
 	}
 	
+	//Delete question
+	 public String deleteQuestion(BigInteger questionId)
+	    {
+	    	questiondao.deleteById(questionId);
+	    	return "Question Details Deleted";
+	    }
 	
 
 }

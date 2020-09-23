@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,6 +43,21 @@ QuestionService questionservice;
 		}
 		
 	}
+	
+	
+	 @DeleteMapping("/deleteQuestion/{questionId}")
+     public ResponseEntity<String> deleteQuestion(@PathVariable BigInteger questionId)
+     {
+  	   try
+  	   {
+  		   questionservice.deleteQuestion(questionId);
+  		   return new ResponseEntity<String>("Question Details Deleted Successfully",HttpStatus.OK);
+  	   }
+  	   catch(Exception ex)
+  	 	  {
+  	 		 return new ResponseEntity<String>("Deletion Failed",HttpStatus.BAD_REQUEST);
+  	 	  }
+     }
 	
 
 	//Exception Handling
