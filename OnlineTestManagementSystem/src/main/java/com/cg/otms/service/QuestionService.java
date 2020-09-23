@@ -47,5 +47,28 @@ QuestionDao questiondao;
 	    	return "Question Details Deleted";
 	    }
 	
-
+	/* public Test calculateTotalMarks(Test test) {
+	     Set<Question> s=test.getTestQuestions();
+	     int testTotalMarks=0;
+	     int testMarksScored=0;
+	     Iterator<Question> it = s.iterator(); 
+	     while (it.hasNext()) 
+	     {
+	          Question q= it.next(); 
+	          
+	          if(q.getChoosenAnswer()==q.getQuestionAnswer())
+	          {
+	        	  q.setMarksScored(q.getQuestionMarks());
+	          }
+	          testTotalMarks=testTotalMarks+q.getQuestionMarks();
+	          testMarksScored=testMarksScored+q.getMarksScored();
+	          q.setTest(test);
+	          dao1.save(q);
+		       
+	     }
+		test.setTestTotalMarks(testTotalMarks);
+		test.setTestMarksScored(testMarksScored);
+	     
+		return test;
+	}*/
 }
