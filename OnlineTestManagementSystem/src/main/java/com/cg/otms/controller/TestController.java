@@ -87,7 +87,7 @@ public class TestController {
 			Set<Question> questionDetails = testservice.getQuestionById(testId); //Invoking a method- getQuestionById
 			//Condition - Checking whether the obtained object is empty
 			if (questionDetails.isEmpty()) {
-				throw new IdNotFoundException("questions are not assigned or the given id is incorrect");  //if object is empty throwing a IdNotFoundException
+				throw new IdNotFoundException("questions are not assigned");  //if object is empty throwing a IdNotFoundException
 			} else {
 				//returning the questionDetails with httpStatus and headers
 				return new ResponseEntity<Set<Question>>(questionDetails, new HttpHeaders(), HttpStatus.OK);
