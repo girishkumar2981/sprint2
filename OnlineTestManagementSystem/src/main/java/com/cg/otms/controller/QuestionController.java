@@ -21,45 +21,96 @@ import com.cg.otms.exception.IdNotFoundException;
 import com.cg.otms.service.QuestionService;
 
 
-@RestController
-@RequestMapping("/testquestions")
-
-@CrossOrigin("http://localhost:4200")
+@RestController                             
+@RequestMapping("/testquestions")            
+@CrossOrigin(origins = "http://localhost:4200")       
 public class QuestionController {
 	
-@Autowired
-QuestionService questionservice;
+@Autowired                                   
+QuestionService questionservice;             
 
-//Adding question to test with particular testId
+ 	/**
+ 	 * This method used to add question by Id 
+ 	 * @return String Question added successfully
+ 	 */
 	@PostMapping("/addQuestion/{testId}")
 	public ResponseEntity<String> addQuestion(@PathVariable("testId") BigInteger testId,@RequestBody Question question) {
-		Test testDetails = questionservice.addQuestion(testId,question);
+		Test testDetails = questionservice.addQuestion(testId,question); //invoking a method - addQuestion
+		//checking whether the object is null 
 		if (testDetails == null) {
 
-			throw new IdNotFoundException("Question not added");
+			throw new IdNotFoundException("Question not added"); 
 
 		} else {
+			//returning the ResponseEntity<String> with httpStatus and httpHeaders
 			return new ResponseEntity<String>("Question added successfully", new HttpHeaders(), HttpStatus.OK);
 		}
 		
 	}
 	
-	
-	 @DeleteMapping("/deleteQuestion/{questionId}")
+	/**
+	 * This method used to delete the question with particular questionId
+	 * @return String that Question Details Deleted Successfully        
+	 */
+	@DeleteMapping("/deleteQuestion/{questionId}")
      public ResponseEntity<String> deleteQuestion(@PathVariable BigInteger questionId)
      {
   	   try
   	   {
-  		   questionservice.deleteQuestion(questionId);
-  		   return new ResponseEntity<String>("Question Details Deleted Successfully",HttpStatus.OK);
+  		   questionservice.deleteQuestion(questionId); //invoking a method - deleteQuestion
+  		   return new ResponseEntity<String>("Question Details Deleted Successfully",new HttpHeaders(),HttpStatus.OK);
   	   }
   	   catch(Exception ex)
   	 	  {
-  	 		 return new ResponseEntity<String>("Deletion Failed",HttpStatus.BAD_REQUEST);
+  		     //returning the ResponseEntity<String> with httpStatus and httpHeaders
+  	 		 return new ResponseEntity<String>("Deletion Failed",new HttpHeaders(),HttpStatus.BAD_REQUEST);
   	 	  }
      }
+	/*@PostMapping("/deleteQuestion/{testId}")
+	private ResponseEntity<String> deleteQuestion(@PathVariable("testId") BigInteger testId,@RequestBody Question question) {
+		Boolean status = questionservice.deleteQuestion(testId,question);
+		if (status == false) {
+			throw new IdNotFoundException("Delete operation is unsuccessful");
+		
+		} else {
+			return new ResponseEntity<String>("Delete operation is successful", new HttpHeaders(), HttpStatus.OK);
+		
+	}
+	}*/
 	
+	    /**
+		 * This method used to calculate total marks 
+		 * @return testDetails        
+		 */
+		@PostMapping("/calculateTotalMarks")
+		public Test calculateTotalMarks(@RequestBody Test test) {
+			Test testDetails = questionservice.calculateTotalMarks(test);
+			if (testDetails == null) {
 
+				throw new IdNotFoundException("Test details not found");
+			}
+			else
+			{
+			return testDetails;
+			}
+		}
+		
+
+		 /**
+		 * This method used to update Question
+		 * @return String Question updated successfully       
+		 */
+		@PostMapping("/updateQuestion/{testId}")
+		public ResponseEntity<String> updateQuestion(@PathVariable("testId") BigInteger testId,@RequestBody Question question) {
+			Question questionDetails = questionservice.updateQuestion(testId,question);
+			if (questionDetails == null) {
+				throw new IdNotFoundException("Update Operation Unsuccessful,Provided testId does not exist");
+			
+			} else {
+				return new ResponseEntity<String>("Question updated successfully", new HttpHeaders(), HttpStatus.OK);
+			}
+		}
+		
 	//Exception Handling
 	@ExceptionHandler(IdNotFoundException.class)
 	public ResponseEntity<String> userNotFound(IdNotFoundException e) {

@@ -13,18 +13,18 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Entity                               //Indicates that the class is an entity
-@Table(name="Userdetails")            //specifies the table name
+@Entity                               
+@Table(name="Userdetails")            
 public class User {
-	@Id                               //It indicates primary key of an entity class
-	@Column(length=10)                // specifying the column length
+	//variable definition
+	@Id                               
+	@Column(length=10)               
 private String userId;
 	//Implementing onetoOne relation and cascade=CascadeType.ALL is used to prevent flushing
-	@OneToOne(mappedBy="user",cascade=CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval=true) //It indicates one to one relation
-	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})//
-	@JoinColumn(name = "userTest")   //Joining the column
+	@OneToOne(mappedBy="user",cascade=CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval=true) 
+	@JoinColumn(name = "userTest")   
 	private Test userTest;
-	@Column(length=15)                 // specifying the column length
+	@Column(length=15)                  //specifying the column length
 private String password;
 	@Column(length=15)
 private String rePassword;
@@ -32,7 +32,25 @@ private String rePassword;
 private BigInteger phonenumber;
 	@Column(length=25)
 	private String emailId;
-	//Getters and setters methods implementation
+	//Default constructor
+	public User()
+	{
+		
+	}
+	//parameterized constructor
+public User(String userId, Test userTest, String password, String rePassword, BigInteger phonenumber,
+			String emailId) {
+		super();
+		this.userId = userId;
+		this.userTest = userTest;
+		this.password = password;
+		this.rePassword = rePassword;
+		this.phonenumber = phonenumber;
+		this.emailId = emailId;
+	}
+/**
+ *Public getter and setter for the private variables declared
+ */
 public String getUserId() {
 	return userId;
 }

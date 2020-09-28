@@ -15,27 +15,33 @@ import java.util.Set;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Service                   //Indicates that the annotated class is service
-@Transactional             //Defines the scope of a single database transaction
+@Service                   
+@Transactional             
 public class TestService {
 	
-	@Autowired              //enables to inject the object dependency implicitly
-	TestDao testdao;        //Enabling Dependency injection
-	@Autowired              //enables to inject the object dependency implicitly
-	UserDao userdao;        //Enabling Dependency injection
+	@Autowired              
+	TestDao testdao;        
+	@Autowired              
+	UserDao userdao;        
 		
-	//Adding Test 
+	/**
+	 * Adding the test into the database
+	 */
 	public Test addTest(Test test)
 	{
-		return testdao.save(test);   //saves the given entity
+		return testdao.save(test);           //saves the given entity
 	}
 	
-   //Retrieving all Test details from database
+	/**
+	 * Returning the list of all test objects
+	 */
 	public List<Test> testDetails() {
 		return testdao.findAll();           //returns all the instances of the type
 	}
 	
-	//Delete Test
+	/**
+	 * Deleting the test with testId
+	 */
 	public String deleteTest(BigInteger testId)
 	{
 		
@@ -50,26 +56,32 @@ public class TestService {
 		}
 	}
 
-	//Retrieving Test details with particular testId
+	/**
+	 * Retrieving test details by testId
+	 */
 	 public Optional<Test> getTestById(BigInteger testId) {
 			
 			return testdao.findById(testId);        //Retrieves an entity by its id.
 		}
 
-	 //Retrieving Question details with particular testId
+	   /**
+		 * Retrieving question details by questionId
+		 */
 	public Set<Question> getQuestionById(BigInteger testId) {
 		Test t=testdao.getOne(testId);           //Returns a reference to the entity with the given identifier
 		return t.getTestQuestions();
 	}
 
 	
-	//Assigning Test to particular User
+	/**
+	 * Assigning test by testTd and userId
+	 */
 	public User assignTest(BigInteger testId, String userId) {
 		//Condition : To check whether test and user exists by id
 		if(testdao.existsById(testId)&&userdao.existsById(userId))
 		{
-			Test t=testdao.getOne(testId);  //Invoking a method
-			User u=userdao.getOne(userId);
+			Test t=testdao.getOne(testId); 
+			User u=userdao.getOne(userId);  //Returns a reference to the entity with the given identifier
 			t.setUser(u);
 			u.setUserTest(t);
 			return userdao.save(u);    //Saves a given entity
@@ -81,6 +93,24 @@ public class TestService {
 		return null;
 	}
 	}
+	
+	/**
+	 * Updating test 
+	 */
+		public Test updateTest(BigInteger testId, Test test)
+		{
+			//Condition : To check whether test exists by Id
+			if(testdao.existsById(testId))
+			{
+				Test t=testdao.getOne(testId);
+				test.setTestQuestions(t.getTestQuestions());
+				 return testdao.save(test);
+			}
+			else
+			{
+				return null;
+			}
+		}
 		
 	
 	

@@ -8,27 +8,43 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Entity                                   //Indicates that the class is an entity
-@Table(name="QuestionDetails")            //specifies the table name
+@Entity                                   
+@Table(name="QuestionDetails")            
 public class Question  {
-
-	@Id                                     //It indicates primary key of an entity class
+	//variable definition
+	@Id                                     
 	private BigInteger questionId;
-   
-	@ManyToOne(fetch = FetchType.LAZY)      //It indicates many to one relation 
-	@JoinColumn(nullable=false)        
-	private Test test;
-	
-	private String questionOptions;
-	
+	//Implementing manytoOne relation and data is fetched eagerly
+	@ManyToOne(fetch = FetchType.LAZY)      
+	@JoinColumn(nullable=false)             
+	private Test test;                      	
+	private String questionOptions;        
 	private String questionTitle;
 	private int questionAnswer;
 	private int questionMarks;
-
 	private int choosenAnswer; 
 	private int marksScored;
-	
-	//Getters and setters methods implementation
+	//Default constructor
+	public Question()
+	{
+		
+	}
+	//parameterized constructor
+	public Question(BigInteger questionId, Test test, String questionOptions, String questionTitle, int questionAnswer,
+			int questionMarks, int choosenAnswer, int marksScored) {
+		super();
+		this.questionId = questionId;
+		this.test = test;
+		this.questionOptions = questionOptions;
+		this.questionTitle = questionTitle;
+		this.questionAnswer = questionAnswer;
+		this.questionMarks = questionMarks;
+		this.choosenAnswer = choosenAnswer;
+		this.marksScored = marksScored;
+	}
+	/**
+	 *Public getter and setter for the private variables declared
+	 */
 	public BigInteger getQuestionId() {
 		return questionId;
 	}

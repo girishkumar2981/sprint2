@@ -3,7 +3,11 @@ package com.cg.otms.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,34 +15,52 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.otms.dto.Admin;
+import com.cg.otms.exception.AdminDefinedException;
 import com.cg.otms.service.AdminService;
 
-@RestController                       //Indicates that the annotated class is controller
-@RequestMapping("/admin")             //mapping web requests onto methods
-@CrossOrigin("http://localhost:4200") //permitting cross-origin requests
+@RestController                       
+@RequestMapping("/admin")             
+@CrossOrigin(origins = "http://localhost:4200")
 public class AdminController {
-@Autowired                      //enables to inject the object dependency implicitly
-AdminService adminservice;      //Enabling Dependency injection
-    //Admin login method
-	@GetMapping("/adminLogin/{adminId},{adminPassword}")      //Mapping the url
-	public String adminLogin(@PathVariable("adminId") String adminId,@PathVariable("adminPassword") String adminPassword) {
+@Autowired                      
+AdminService adminservice;      
+/**
+ * This method used for adminLogin 
+
+ * @return String valid admin if admin details are present
+ */
+	@GetMapping("/adminLogin/{adminId},{adminPassword}")      
+	public ResponseEntity<String> adminLogin(@PathVariable("adminId") String adminId,@PathVariable("adminPassword") String adminPassword) {
 		
 		Optional<Admin> adminDetails = adminservice.adminLogin(adminId,adminPassword); //Invoking a method - adminLogin
 		//Condition - Checking whether the obtained object is null
-		if(adminDetails.isPresent())
+		if(!adminDetails.isPresent())
 		{
-			return "valid";
+			throw new AdminDefinedException("Admin credentials are incorrect"); 
 		}
 		else
 		{
-		return "invalid";
+			return new ResponseEntity<String>("valid admin", new HttpHeaders(), HttpStatus.OK);   //returning string -invalid
 		}
 	}
+/*@RequestMapping("/adminLogin/{adminId},{adminPassword}")
+public String adminLogin(@PathVariable("adminId") String adminId,@PathVariable("adminPassword") String adminPassword) {
+	Optional<Admin> adminDetails = adminservice.adminLogin(adminId,adminPassword);
 	
-	//Inserting Admin details into database
-	@PostMapping("/addAdmin")                 //Mapping the url to add admin details
+	return adminDetails.toString();
+}*/
+	
+	/**
+	 * This method used for adding admin details into database
+	 */
+	@PostMapping("/addAdmin")                 
 	public void addAdmin()
 	{
-		adminservice.addAdmin();               //Invoking a method - addAdmin
+		adminservice.addAdmin();         //Invoking a method - addAdmin
 	}
+	
+   @ExceptionHandler(AdminDefinedException.class)
+	public ResponseEntity<String> adminNotFound(AdminDefinedException e) {
+		return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 }

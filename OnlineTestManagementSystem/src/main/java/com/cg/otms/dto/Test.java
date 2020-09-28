@@ -16,11 +16,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Entity                             //Indicates that the class is an entity
-@Table(name="TestDetails")          //specifies the table name
+@Entity                             
+@Table(name="TestDetails")          
 public class Test {
-
-	@Id                              //It indicates primary key of an entity class
+	
+    //variable definition
+	@Id                             
 	private BigInteger id;
 	private String title;
 	private int testTotalMarks=0;
@@ -33,9 +34,31 @@ public class Test {
 	private Set<Question> testQuestions;
     //Implementing onetoOne relation
 	@OneToOne(fetch = FetchType.LAZY)  
-	@JoinColumn(name = "userId")          //Joining a column                        
-	private User user;
-	//Getters and setters methods implementation
+	@JoinColumn(name = "userId")                                 
+	private User user;                        
+	//Default constructor
+	public Test()
+	{
+		
+	}
+	//parameterized constructor
+	public Test(BigInteger id, String title, int testTotalMarks, int testMarksScored, LocalTime duration,
+			LocalDateTime starttime, LocalDateTime endtime, Set<Question> testQuestions, User user) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.testTotalMarks = testTotalMarks;
+		this.testMarksScored = testMarksScored;
+		this.duration = duration;
+		this.starttime = starttime;
+		this.endtime = endtime;
+		this.testQuestions = testQuestions;
+		this.user = user;
+	}
+
+	/**
+	 *Public getter and setter for the private variables declared
+	 */
 	public BigInteger getId() {
 		return id;
 	}

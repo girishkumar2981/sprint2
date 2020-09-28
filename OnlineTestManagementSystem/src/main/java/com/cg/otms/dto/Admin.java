@@ -4,17 +4,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity                              //Indicates that the class is an entity
-@Table(name="AdminDetails")          //specifies the table name
+@Entity                             
+@Table(name="AdminDetails")          
 public class Admin {
-     
-	@Id                               //It indicates primary key of an entity class
-private String adminId;
+	//variable definition
+	@Id                               
+   private String adminId;     
    private String adminName;
 	private String adminPassword;
 	private LocalDate dateOfBirth;
 	private String adminContact;
-	
 	public Admin()     //Default constructor
 	{
 		
@@ -28,7 +27,9 @@ private String adminId;
 		this.dateOfBirth = dateOfBirth;
 		this.adminContact = adminContact;
 	}
-	//Getters and setters methods implementation
+	/**
+	 *Public getter and setter for the private variables declared
+	 */
 	public String getAdminId() {
 		return adminId;
 	}
