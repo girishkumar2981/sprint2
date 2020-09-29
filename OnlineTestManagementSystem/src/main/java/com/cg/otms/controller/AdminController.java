@@ -23,32 +23,18 @@ import com.cg.otms.service.AdminService;
 @CrossOrigin(origins = "http://localhost:4200")
 public class AdminController {
 @Autowired                      
-AdminService adminservice;      
-/**
- * This method used for adminLogin 
+AdminService adminservice; 
 
- * @return String valid admin if admin details are present
- */
-	@GetMapping("/adminLogin/{adminId},{adminPassword}")      
-	public ResponseEntity<String> adminLogin(@PathVariable("adminId") String adminId,@PathVariable("adminPassword") String adminPassword) {
-		
-		Optional<Admin> adminDetails = adminservice.adminLogin(adminId,adminPassword); //Invoking a method - adminLogin
-		//Condition - Checking whether the obtained object is null
-		if(!adminDetails.isPresent())
-		{
-			throw new AdminDefinedException("Admin credentials are incorrect"); 
-		}
-		else
-		{
-			return new ResponseEntity<String>("valid admin", new HttpHeaders(), HttpStatus.OK);   //returning string -invalid
-		}
-	}
-/*@RequestMapping("/adminLogin/{adminId},{adminPassword}")
-public String adminLogin(@PathVariable("adminId") String adminId,@PathVariable("adminPassword") String adminPassword) {
+	/**
+	 * This method used for adminLogin 
+	 * @return String valid admin if admin details are present
+	 */
+    @GetMapping("/adminLogin/{adminId},{adminPassword}")
+    public String adminLogin(@PathVariable("adminId") String adminId,@PathVariable("adminPassword") String adminPassword) {
 	Optional<Admin> adminDetails = adminservice.adminLogin(adminId,adminPassword);
 	
 	return adminDetails.toString();
-}*/
+}
 	
 	/**
 	 * This method used for adding admin details into database

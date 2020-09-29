@@ -25,7 +25,7 @@ QuestionDao questiondao;
 	 */
 	public Test addQuestion(BigInteger testId,Question question)
 	{
-	if(testdao.existsById(testId))
+	if(testdao.existsById(testId)&&!(questiondao.existsById(question.getQuestionId())))
 	{
 		Test t=testdao.getOne(testId);       //Returns a reference to the entity with the given identifier
 		question.setTest(t);                 
@@ -43,12 +43,7 @@ QuestionDao questiondao;
 	/**
 	 * Deleting the question by questionId
 	 */
-	 public String deleteQuestion(BigInteger questionId)
-	    {
-	    	questiondao.deleteById(questionId);  //Deletes the entity with the given id.
-	    	return "Question Details Deleted";
-	    }
-	/*public boolean  deleteQuestion(BigInteger testId,Question question)
+	public boolean  deleteQuestion(BigInteger testId,Question question)
 	{
 		if(testdao.existsById(testId))
 		{
@@ -62,7 +57,7 @@ QuestionDao questiondao;
 	      return false;
 		} 
 		
-	}*/
+	}
 
 	 
 	 /**

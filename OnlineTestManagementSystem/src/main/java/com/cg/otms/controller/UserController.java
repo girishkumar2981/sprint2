@@ -32,26 +32,13 @@ UserService userservice;
 
 	 * @return String valid user if user details are present
 	 */
-	@GetMapping("/UserLogin/{userId}/{password}")  
-	public ResponseEntity<String> userLogin(@PathVariable("userId") String userId,@PathVariable("password") String password) {
-		
-		Optional<User> userDetails = userservice.userLogin(userId,password); //Invoking a method - userLogin
-		//Condition - Checking whether the obtained object is null
-		if(!userDetails.isPresent())
-		{
-			throw new UserDefinedException("User credentials are incorrect"); 
-		}
-		else
-		{
-			return new ResponseEntity<String>("valid user", HttpStatus.OK);     //returning string -valid user
-		}
-	}
-/*@GetMapping("/UserLogin/{userId},{password}")
-public String userLogin(@PathVariable("userId") String userId,@PathVariable("password") String password) {
+	
+    @GetMapping("/UserLogin/{userId},{password}")
+    public String userLogin(@PathVariable("userId") String userId,@PathVariable("password") String password) {
 	Optional<User> userDetails = userservice.userLogin(userId,password);
 	
 	return userDetails.toString();
-}*/
+    }
 	
 	/**
 	 * This method used for retrieving userTest details

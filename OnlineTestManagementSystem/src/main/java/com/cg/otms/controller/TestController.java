@@ -47,7 +47,7 @@ TestService testservice;
 			//Condition - Checking whether the obtained object is null
 			if (testDetails == null) {
 
-				throw new IdNotFoundException("Test not added"); 
+				throw new IdNotFoundException("TestID already exists"); 
 
 			} else {
 				//returning the ResponseEntity<String> with httpStatus and httpHeaders
@@ -85,7 +85,7 @@ TestService testservice;
 			User userDetails = testservice.assignTest(testId,userId);  //Invoking a method- assignTest
 			//Condition - Checking whether the obtained object is null
 			if (userDetails == null) {
-				throw new IdNotFoundException("Id does not exist,so we couldn't assign Test");
+				throw new IdNotFoundException("Test is already assigned to other user or credentials are incorrect");
 	          		
 			} else {
 				//returning the ResponseEntity<String> with httpStatus and httpHeaders

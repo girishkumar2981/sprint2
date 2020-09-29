@@ -29,7 +29,13 @@ public class TestService {
 	 */
 	public Test addTest(Test test)
 	{
-		return testdao.save(test);           //saves the given entity
+		if(!(testdao.existsById(test.getId()))) {
+			return testdao.save(test);            //saves the given entity
+		}
+		else
+		{
+		return null;       
+	}
 	}
 	
 	/**
@@ -77,8 +83,16 @@ public class TestService {
 	 * Assigning test by testTd and userId
 	 */
 	public User assignTest(BigInteger testId, String userId) {
+		try
+		{
+		 User user=userdao.getOne(userId);
+		//Condition : To check whether any test exists by userId
+		 if(user.getUserTest()!=null)
+		{
+			return null;
+		}
 		//Condition : To check whether test and user exists by id
-		if(testdao.existsById(testId)&&userdao.existsById(userId))
+		else if(testdao.existsById(testId)&&userdao.existsById(userId))
 		{
 			Test t=testdao.getOne(testId); 
 			User u=userdao.getOne(userId);  //Returns a reference to the entity with the given identifier
@@ -92,6 +106,11 @@ public class TestService {
 		{
 		return null;
 	}
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
 	}
 	
 	/**

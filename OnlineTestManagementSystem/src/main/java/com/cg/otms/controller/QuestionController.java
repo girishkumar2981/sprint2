@@ -37,36 +37,22 @@ QuestionService questionservice;
 	public ResponseEntity<String> addQuestion(@PathVariable("testId") BigInteger testId,@RequestBody Question question) {
 		Test testDetails = questionservice.addQuestion(testId,question); //invoking a method - addQuestion
 		//checking whether the object is null 
+		
 		if (testDetails == null) {
-
-			throw new IdNotFoundException("Question not added"); 
-
+			throw new IdNotFoundException("QuestionId already exists");
 		} else {
 			//returning the ResponseEntity<String> with httpStatus and httpHeaders
-			return new ResponseEntity<String>("Question added successfully", new HttpHeaders(), HttpStatus.OK);
+			return new ResponseEntity<String>("Question  added successfully", new HttpHeaders(), HttpStatus.OK);
 		}
 		
 	}
+		
 	
 	/**
 	 * This method used to delete the question with particular questionId
 	 * @return String that Question Details Deleted Successfully        
 	 */
-	@DeleteMapping("/deleteQuestion/{questionId}")
-     public ResponseEntity<String> deleteQuestion(@PathVariable BigInteger questionId)
-     {
-  	   try
-  	   {
-  		   questionservice.deleteQuestion(questionId); //invoking a method - deleteQuestion
-  		   return new ResponseEntity<String>("Question Details Deleted Successfully",new HttpHeaders(),HttpStatus.OK);
-  	   }
-  	   catch(Exception ex)
-  	 	  {
-  		     //returning the ResponseEntity<String> with httpStatus and httpHeaders
-  	 		 return new ResponseEntity<String>("Deletion Failed",new HttpHeaders(),HttpStatus.BAD_REQUEST);
-  	 	  }
-     }
-	/*@PostMapping("/deleteQuestion/{testId}")
+	@PostMapping("/deleteQuestion/{testId}")
 	private ResponseEntity<String> deleteQuestion(@PathVariable("testId") BigInteger testId,@RequestBody Question question) {
 		Boolean status = questionservice.deleteQuestion(testId,question);
 		if (status == false) {
@@ -76,7 +62,7 @@ QuestionService questionservice;
 			return new ResponseEntity<String>("Delete operation is successful", new HttpHeaders(), HttpStatus.OK);
 		
 	}
-	}*/
+	}
 	
 	    /**
 		 * This method used to calculate total marks 

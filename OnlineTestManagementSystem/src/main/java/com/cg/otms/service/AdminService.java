@@ -27,8 +27,6 @@ public class AdminService {
 		
 		return admindao.adminLogin(adminId, adminPassword); //Invoking a method - adminLogin
 	}
-	
-
 			
 	/**
 	 * Adding admin details into database
